@@ -1,7 +1,7 @@
 # contents of an alternate_dashboard.py file
 import streamlit as st
-from maps_module import *
-from boxtimeseries import *
+from src.maps_module import *
+from src.boxtimeseries import *
 
     
 def main(data_path='../data/df_master.csv'):
