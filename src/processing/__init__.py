@@ -23,8 +23,20 @@ def assign_season(month):
     else:
         return 'Musim Peralihan 2'
 
-def load_data(pathfile='../data/df_master.csv'):
-    required_cols = ['year_month', 'season', 'latitude', 'longitude','sss', 'analysed_sst', 'chlor_a']
+import os
+import pandas as pd
+import streamlit as st
+
+# 1. Get the absolute path of the directory containing this script (src/)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Build the unbreakable absolute path to your default csv file
+DEFAULT_PATH = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "data", "df_master.csv"))
+
+# 3. Use the absolute path as your default argument value
+@st.cache_data  # Highly recommended to speed up your Streamlit app
+def load_data(pathfile=DEFAULT_PATH):
+    required_cols = ['year_month', 'season', 'latitude', 'longitude', 'sss', 'analysed_sst', 'chlor_a']
     df = pd.read_csv(pathfile, usecols=required_cols)
     df['year_month'] = pd.to_datetime(df['year_month'])
     
