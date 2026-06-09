@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import processing
+from src import processing
 import plotly.graph_objects as go
 
 st.set_page_config(layout="wide")

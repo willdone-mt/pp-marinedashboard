@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import warnings
-import processing
+from src import processing
 warnings.filterwarnings('ignore')
 
 # =====================================================================
