@@ -4,11 +4,10 @@ from maps_module import *
 from boxtimeseries import *
 
 # Load dataset using your cached wrapper function
-data_path = '../data/df_master.csv'
 try:
-    df_master = load_data(data_path)
+    df_master = load_data()
 except FileNotFoundError:
-    st.error(f"⚠️ Dataset file not found at `{data_path}`.")
+    st.error(f"⚠️ Dataset file not found at `x` aka the load data doesnt work.")
     st.stop()
     
 
