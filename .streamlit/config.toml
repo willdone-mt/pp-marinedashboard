@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#0066CC"             # Deep ocean blue for buttons, sliders, and links
+backgroundColor = "#F2F7FA"          # Crisp, cool-mist white for the main background
+secondaryBackgroundColor = "#DCEEFA" # Soft sky-and-surf blue for the sidebar
+textColor = "#0A1D37"                # Deep midnight navy for perfect text legibility
+font = "sans serif"

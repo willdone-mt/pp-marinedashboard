@@ -1,3 +1,3 @@
 from src import main
 
-main.main('data/df_master.csv')
+main.main('data/df_master.csv', 'data/raw')

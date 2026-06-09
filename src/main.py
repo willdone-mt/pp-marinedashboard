@@ -2,9 +2,10 @@
 import streamlit as st
 from src.maps_module import *
 from src.boxtimeseries import *
+from src.eda import *
 
     
-def main(data_path='../data/df_master.csv'):
+def main(data_path='../data/df_master.csv', raw_data='../data/raw'):
     # Load dataset using your cached wrapper function
     try:
         df_master = load_data(data_path)
@@ -31,7 +32,7 @@ def main(data_path='../data/df_master.csv'):
         options=[
             "Quick-display",
             "Boxplot Time Series",
-            "Exploratory Spatial Data Analysis",
+            "Exploratory Data Analysis",
             "Information & About"
         ]
     )
@@ -100,18 +101,20 @@ def main(data_path='../data/df_master.csv'):
             body="Northen Ocean of Papua"
         )
 
+        st.divider()
+
         column1, column2 = st.columns(
-            spec=[0.4,0.6],
+            spec=[0.55,0.45],
             vertical_alignment='center'
         )
 
-        with column2:
+        with column1:
             render_correlation_map(
                 df=df_plot,
                 center_lat=c_lat,
                 center_lon=c_lon
             )
-        with column1:
+        with column2:
             render_chlorophyll_map(
                 df=df_plot,
                 center_lat=c_lat,
@@ -142,6 +145,8 @@ def main(data_path='../data/df_master.csv'):
                 selected_years=selected_years,
                 target_season=target_season
             )
+    elif app_mode == "Exploratory Data Analysis":
+        eda_main(raw_data)
 
     # ==========================================
     # 4. GLOBAL FOOTER

@@ -73,53 +73,82 @@ def configure_dark_islands(fig):
     return fig
 
 def render_chlorophyll_map(df, center_lat, center_lon, height=250):
-    """Renders the Chlorophyll-a Mean Map Widget with adjustable height."""
+    """Renders the Chlorophyll-a Mean Map Widget with a vertical colorbar title."""
     fig = px.scatter_mapbox(
         df, lat="latitude", lon="longitude", color="chlor_a",
         color_continuous_scale="Cividis",
         range_color=[0, 0.5],
-        zoom=5, center={"lat": center_lat, "lon": center_lon},
-        hover_data={"latitude": True, "longitude": True, "chlor_a": ":.4f"}
+        zoom=4, center={"lat": center_lat, "lon": center_lon},
+        hover_data={"latitude": True, "longitude": True, "chlor_a": ":.4f"},
+        labels={"chlor_a": "Chlorophyll-a (mg/m³)"}
     )
     fig.update_traces(marker=dict(size=7, opacity=1.0))
-    # Height is controlled perfectly here via the layout
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, height=height)
+    
+    # FIX: Rotates and aligns the colorbar title vertically
+    fig.update_layout(
+        margin={"r":0,"t":0,"l":0,"b":0}, 
+        height=height,
+        coloraxis_colorbar=dict(
+            title_side="right",  # Places title vertically on the right side of the colorbar
+            thickness=15         # Optional: keeps the colorbar clean and sleek
+        )
+    )
     
     fig = configure_dark_islands(fig)
-    # Fixed: Removed invalid height='stretch' parameter
     st.plotly_chart(fig, use_container_width=True)
 
 
 def render_sst_map(df, center_lat, center_lon, height=250):
-    """Renders the Sea Surface Temperature Mean Map Widget with adjustable height."""
+    """Renders the Sea Surface Temperature Mean Map Widget with a vertical colorbar title."""
     fig = px.scatter_mapbox(
         df, lat="latitude", lon="longitude", color="analysed_sst",
         color_continuous_scale="Cividis",
         range_color=[df['analysed_sst'].min(), df['analysed_sst'].max()],
-        zoom=5, center={"lat": center_lat, "lon": center_lon},
-        hover_data={"latitude": True, "longitude": True, "analysed_sst": ":.4f"}
+        zoom=4, center={"lat": center_lat, "lon": center_lon},
+        hover_data={"latitude": True, "longitude": True, "analysed_sst": ":.4f"},
+        labels={"analysed_sst": "SST (°C)"}
     )
     fig.update_traces(marker=dict(size=7, opacity=1.0))
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, height=height)
+    
+    # FIX: Rotates and aligns the colorbar title vertically
+    fig.update_layout(
+        margin={"r":0,"t":0,"l":0,"b":0}, 
+        height=height,
+        coloraxis_colorbar=dict(
+            title_side="right",
+            thickness=15
+        )
+    )
     
     fig = configure_dark_islands(fig)
-    # Fixed: Removed invalid height='stretch' parameter
     st.plotly_chart(fig, use_container_width=True)
 
 
 def render_correlation_map(df, center_lat, center_lon, height=500):
-    """Renders the Ordinary Correlation Map Widget with adjustable height."""
+    """Renders the Ordinary Correlation Map Widget with a horizontal colorbar."""
     fig = px.scatter_mapbox(
         df, lat="latitude", lon="longitude", color="M",
-        # Beautiful clean continuous diverging color scale
         color_continuous_scale=[[0, 'blue'], [0.5, 'white'], [1.0, 'red']], 
         range_color=[-1, 1],
         zoom=5, center={"lat": center_lat, "lon": center_lon},
-        hover_data={"latitude": True, "longitude": True, "M": ":.4f"}
+        hover_data={"latitude": True, "longitude": True, "M": ":.4f"},
+        labels={"M": "Spearman Coefficient (ρ)"}
     )
     fig.update_traces(marker=dict(size=7, opacity=1.0))
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, height=height)
     
+    # Move the colorbar to the bottom and orient it horizontally
+    fig.update_coloraxes(
+        colorbar=dict(
+            orientation="h",
+            yanchor="top",
+            y=-0.08,          # Slightly tighter spacing for the larger map
+            xanchor="center",
+            x=0.5,
+            title_side="top"
+        )
+    )
+    
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":40}, height=height)
     fig = configure_dark_islands(fig)
     st.plotly_chart(fig, use_container_width=True)
 
